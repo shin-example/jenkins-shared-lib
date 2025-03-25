@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    jenkins-agent: docker-build-agent
+spec:
+  serviceAccountName: jenkins-agent
+  containers:
+  - name: docker
+    image: docker:20.10.16-dind
+    securityContext:
+      privileged: true
+    command:
+    - cat
+    tty: true
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+      limits:
+        cpu: "1"
+        memory: "2Gi"
+    volumeMounts:
+    - name: docker-socket
+      mountPath: /var/run/docker.sock
+    - name: jenkins-workspace
+      mountPath: /home/jenkins/agent
+  - name: kubectl
+    image: bitnami/kubectl:1.24.0
+    command:
+    - cat
+    tty: true
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+  volumes:
+  - name: docker-socket
+    hostPath:
+      path: /var/run/docker.sock
+  - name: jenkins-workspace
+    emptyDir: {}
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations:
+  - key: "jenkins-agent"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
