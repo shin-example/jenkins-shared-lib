@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   labels:
     jenkins-agent: react-build-agent
+  namespace: jenkins
 spec:
   serviceAccountName: jenkins-agent
   containers:
