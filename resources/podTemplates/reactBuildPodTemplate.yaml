@@ -3,9 +3,8 @@ kind: Pod
 metadata:
   labels:
     jenkins-agent: react-build-agent
-  namespace: jenkins
 spec:
-  serviceAccountName: jenkins-agent
+  serviceAccountName: shiftone-jenkins
   containers:
   - name: nodejs
     image: node:16-alpine
