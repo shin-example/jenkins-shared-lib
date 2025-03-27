@@ -33,7 +33,6 @@ def call(Map params = [:]) {
     return [
         cloud: 'kubernetes',
         yaml: finalYaml,
-        inheritFrom: inheritFrom,
-        workspaceVolume: persistentVolumeClaimWorkspaceVolume(claimName: "jenkins-agent-pvc", readOnly: false)
+        inheritFrom: inheritFrom
     ]
 }
